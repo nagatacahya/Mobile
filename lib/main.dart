@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'tiered_pricing_card.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -11,173 +13,216 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.grey[200],
-        body: const Center(child: TieredPricingCard()),
+      title: 'Kumpulan Tugas Flutter',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      home: const DashboardPage(),
+    );
+  }
+}
+
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dashboard Tugas Mobile'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Pilih Tugas yang Ingin Dibuka:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+
+            Card(
+              elevation: 3,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.alt_route,
+                  size: 40,
+                  color: Colors.blue,
+                ),
+                title: const Text(
+                  'Tugas 1: Routing & Navigation',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: const Text(
+                  'Daftar pengguna & detail profil Stateful',
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LayarBeranda(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            Card(
+              elevation: 3,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.card_membership,
+                  size: 40,
+                  color: Colors.amber,
+                ),
+                title: const Text(
+                  'Tugas 2: Pricing Card',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: const Text('Layout Stack & Card paket langganan'),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TieredPricingPage(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class TieredPricingCard extends StatelessWidget {
-  const TieredPricingCard({super.key});
+class LayarBeranda extends StatelessWidget {
+  const LayarBeranda({super.key});
+
+  final List<Map<String, String>> daftarPengguna = const [
+    {
+      'nama': 'Budi Santoso',
+      'bio': 'Software Engineer yang menyukai pemrograman Flutter dan kopi.',
+    },
+    {
+      'nama': 'Siti Rahma',
+      'bio': 'UI/UX Designer fokus pada desain aplikasi mobile yang ramah pengguna.',
+    },
+    {
+      'nama': 'Ahmad Fauzi',
+      'bio':
+          'Data Scientist yang senang mengeksplorasi AI dan machine learning.',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // 1. Layer Dasar (Pembungkus Utama) & 2. Badge Melayang (Stack)
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        // Kartu Utama
-        Container(
-          width: 300,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-
-              // 3. Header Paket (Column)
-              const Center(
-                child: Column(
-                  children: [
-                    Icon(Icons.laptop_mac, size: 50, color: Colors.blueAccent),
-                    SizedBox(height: 8),
-                    Text(
-                      "Paket Profesional",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "Solusi lengkap untuk kebutuhan bisnis digital Anda.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // 4. Harga & Durasi (Row)
-              const Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Text(
-                    "Rp 5.000.000",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    "/ proyek",
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              // 5. Daftar Fitur Layanan (Column & Row)
-              const Column(
-                children: [
-                  FeatureItem(text: "Desain UI/UX Khusus"),
-                  SizedBox(height: 8),
-                  FeatureItem(text: "Setup Database"),
-                  SizedBox(height: 8),
-                  FeatureItem(text: "Integrasi API Payment"),
-                  SizedBox(height: 8),
-                  FeatureItem(text: "Dukungan Teknis 24/7"),
-                ],
-              ),
-              const SizedBox(height: 24),
-
-              // 6. Tombol Call-to-Action (SizedBox + ElevatedButton)
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                  child: const Text(
-                    "Pilih Paket",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tugas 1: Daftar Pengguna'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: ListView.builder(
+        itemCount: daftarPengguna.length,
+        itemBuilder: (context, index) {
+          final pengguna = daftarPengguna[index];
+          return ListTile(
+            leading: const CircleAvatar(child: Icon(Icons.person)),
+            title: Text(pengguna['nama']!),
+            subtitle: const Text('Ketuk untuk melihat detail'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LayarDetailProfil(
+                    nama: pengguna['nama']!,
+                    bio: pengguna['bio']!,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-
-        // Badge Melayang di Sudut Kanan Atas (Positioned)
-        Positioned(
-          top: -10,
-          right: 15,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Text(
-              "Rekomendasi",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-        ),
-      ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
 
-// Widget Komponen Baris Fitur
-class FeatureItem extends StatelessWidget {
-  final String text;
+class LayarDetailProfil extends StatefulWidget {
+  final String nama;
+  final String bio;
 
-  const FeatureItem({super.key, required this.text});
+  const LayarDetailProfil({super.key, required this.nama, required this.bio});
+
+  @override
+  State<LayarDetailProfil> createState() => _LayarDetailProfilState();
+}
+
+class _LayarDetailProfilState extends State<LayarDetailProfil> {
+  bool _isFollowing = false;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Icon(Icons.check, size: 18, color: Colors.green),
-        const SizedBox(width: 8),
-        Expanded(child: Text(text, style: const TextStyle(fontSize: 14))),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profil ${widget.nama}'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            const Icon(Icons.account_circle, size: 120, color: Colors.blue),
+            const SizedBox(height: 16),
+            Text(
+              widget.nama,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFFE8F0FE),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                widget.bio,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14, color: Colors.black87),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _isFollowing ? Colors.grey : Colors.blue,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 12,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  _isFollowing = !_isFollowing;
+                });
+              },
+              child: Text(_isFollowing ? 'Following' : 'Follow'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
