@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/home_screen.dart';
 import 'tiered_pricing_card.dart';
 
 void main() {
@@ -93,6 +94,32 @@ class DashboardPage extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => const TieredPricingPage(),
                     ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            Card(
+              elevation: 3,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.local_cafe,
+                  size: 40,
+                  color: Colors.teal,
+                ),
+                title: const Text(
+                  'Tugas 3: Katalog & Navigasi',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: const Text(
+                  'ListView 3 card + Detail Katalog Stateful',
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
                   );
                 },
               ),
